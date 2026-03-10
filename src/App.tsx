@@ -34,6 +34,7 @@ const App = () => {
         })
       }
       resetForm()
+      setIdx(null)
     }
   })
 
@@ -72,7 +73,7 @@ const App = () => {
       </div>
 
       <table className='w-[80%] m-auto mt-5 bg-white shadow-lg rounded-xl overflow-hidden text-center'>
-        <thead className='bg-amber-950 text-white'>
+        <thead className='bg-amber-800 h-[40px] text-white '>
           <tr>
             <th>Id</th>
             <th>Name</th>
@@ -83,7 +84,7 @@ const App = () => {
         </thead>
 
 
-        <tbody className=' text-gray-500 '>
+        <tbody className=' text-gray-500 text-[20px]'>
           {data.map((e) => (
             <tr key={e.id}>
               <td className='p-3'>{e.id}</td>
