@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTodo } from './store/todo';
 import { useFormik } from 'formik'
-import Switch from '@mui/material/Switch';
+// import Switch from '@mui/material/Switch';
 
 
 
-interface IData {
-  id: number,
-  name: string
-}
+// interface IData {
+//   id: number,
+//   name: string
+// }
 
 const App = () => {
-  const label = { inputProps: { 'aria-label': 'Switch damo' } };
-  const [idx, setIdx] = useState(null)
+  // const label = { inputProps: { 'aria-label': 'Switch damo' } };
+  const [idx, setIdx] = useState(0)
 
-  const { data, deleteUser, addUser, checkUser, editUser } = useTodo()
+  const { data, deleteUser, addUser, editUser } = useTodo()
 
   const { handleSubmit, values, handleChange, resetForm, setFieldValue } = useFormik({
     initialValues: {
@@ -34,11 +34,11 @@ const App = () => {
         })
       }
       resetForm()
-      setIdx(null)
+      setIdx(0)
     }
   })
 
-  const handleEdit = (e) => {
+  const handleEdit = (e: { id: number, name: string, age: number, status: boolean }) => {
     setIdx(e.id)
     setFieldValue("name", e.name)
     setFieldValue("age", e.age)
@@ -56,7 +56,7 @@ const App = () => {
               name='name'
               value={values.name}
               onChange={handleChange}
-              className='border border-2 border-black rounded p-3'
+              className='border-2 border-black rounded p-3'
             />
             <input
               type="number"
@@ -64,7 +64,7 @@ const App = () => {
               name='age'
               value={values.age}
               onChange={handleChange}
-              className='border border-2 border-black rounded p-3'
+              className='border-2 border-black rounded p-3'
             />
             <button type='submit' className='w-[150px]  border ml-[25px] p-3 rounded text-white bg-green-400 hover:text-green-400 hover:bg-white transition-all '>Add</button>
           </form>
@@ -73,7 +73,7 @@ const App = () => {
       </div>
 
       <table className='w-[80%] m-auto mt-5 bg-white shadow-lg rounded-xl overflow-hidden text-center'>
-        <thead className='bg-amber-800 h-[40px] text-white '>
+        <thead className='bg-amber-800 h-10 text-white '>
           <tr>
             <th>Id</th>
             <th>Name</th>
