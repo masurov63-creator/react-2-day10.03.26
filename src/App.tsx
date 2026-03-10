@@ -1,0 +1,106 @@
+import React, { useState } from 'react'
+import { useTodo } from './store/todo';
+import { useFormik } from 'formik'
+import Switch from '@mui/material/Switch';
+
+
+
+interface IData {
+  id: number,
+  name: string
+}
+
+const App = () => {
+  const label = { inputProps: { 'aria-label': 'Switch damo' } };
+  const [idx, setIdx] = useState(null)
+
+  const { data, deleteUser, addUser, checkUser, editUser } = useTodo()
+
+  const { handleSubmit, values, handleChange, resetForm, setFieldValue } = useFormik({
+    initialValues: {
+      name: "",
+      age: 0
+    },
+    onSubmit: (values) => {
+      if (idx) {
+        editUser({ id: idx, ...values, status: false })
+      }
+      else {
+        addUser({
+          id: Date.now(),
+          name: values.name,
+          age: Number(values.age),
+          status: false,
+        })
+      }
+      resetForm()
+    }
+  })
+
+  const handleEdit = (e) => {
+    setIdx(e.id)
+    setFieldValue("name", e.name)
+    setFieldValue("age", e.age)
+  }
+
+  return (
+    <>
+
+      <div className='pt-[10px] flex justify-center'>
+        <div>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder='name'
+              name='name'
+              value={values.name}
+              onChange={handleChange}
+              className='border border-2 border-black rounded p-3'
+            />
+            <input
+              type="number"
+              placeholder='age'
+              name='age'
+              value={values.age}
+              onChange={handleChange}
+              className='border border-2 border-black rounded p-3'
+            />
+            <button type='submit' className='w-[150px]  border ml-[25px] p-3 rounded text-white bg-green-400 hover:text-green-400 hover:bg-white transition-all '>Add</button>
+          </form>
+        </div>
+
+      </div>
+
+      <table className='w-[80%] m-auto mt-5 bg-white shadow-lg rounded-xl overflow-hidden text-center'>
+        <thead className='bg-amber-950 text-white'>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+
+        <tbody className=' text-gray-500 '>
+          {data.map((e) => (
+            <tr key={e.id}>
+              <td className='p-3'>{e.id}</td>
+              <td>{e.name}</td>
+              <td>{e.age}</td>
+              <td className={`${e.status ? 'text-green-400' : 'text-red-400'}`}>{e.status ? "Activ" : "Inactiv"}</td>
+              <td>
+                <span onClick={() => { deleteUser(e.id) }} className='p-3 hover:text-red-500  font-bold'>Delet User</span>
+                <span onClick={() => { handleEdit(e) }} className='p-3 hover:text-green-500  font-bold'>Edit User</span>
+
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+export default App
